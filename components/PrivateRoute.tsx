@@ -1,13 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
 import { View, Text, ActivityIndicator } from 'react-native';
+import { RootState } from '../store/store';
 
-interface PrivateRouteProps {
-    children: React.ReactNode;
-}
-
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+const PrivateRoute = ({ children }: any) => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const loading = useSelector((state: RootState) => state.auth.loading);
 
@@ -27,7 +23,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
         );
     }
 
-    return <>{children}</>;
+    return children;
 };
 
 export default PrivateRoute;

@@ -27,7 +27,7 @@ const Login: React.FC = ({ navigation }: any) => {
 
     useEffect(() => {
         if (isAuthenticated && tokens.access) {
-            navigation.navigate('WelcomeScreen')
+            navigation.navigate('HomeTabs')
         }
     }, [isAuthenticated, tokens, navigation]);
 

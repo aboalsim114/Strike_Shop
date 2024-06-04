@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import Logo from "../../assets/media/logo.png";
-
+import { AppDispatch } from '../../store/store';
+import { login } from '../../store/Auth/authAsync';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 const WelcomeScreen = ({ navigation }: any) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { isAuthenticated, tokens, error, loading } = useSelector((state: RootState) => state.auth);
+
+    const handleLogin = (values: { username: string; password: string }) => {
+        dispatch(login(values));
+    };
+
+    useEffect(() => {
+        if (isAuthenticated && tokens.access) {
+            navigation.navigate('HomeTabs')
+        }
+    }, [isAuthenticated, tokens, navigation]);
+
     return (
         <View style={styles.container}>
 
