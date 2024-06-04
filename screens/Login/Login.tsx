@@ -23,6 +23,12 @@ const Login: React.FC = ({ navigation }: any) => {
 
     const handleLogin = (values: { username: string; password: string }) => {
         dispatch(login(values));
+        if (error) {
+            console.log(error)
+        }
+        else {
+            console.log('tokens : ', tokens)
+        }
     };
 
     useEffect(() => {
@@ -67,8 +73,10 @@ const Login: React.FC = ({ navigation }: any) => {
                         {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
                         <Button mode="contained" onPress={handleSubmit as any} style={styles.button}>
-                            LOG IN
+                            {loading ? <Text>Loading...</Text> : "LOG IN"}
                         </Button>
+
+
                     </View>
                 )}
             </Formik>
