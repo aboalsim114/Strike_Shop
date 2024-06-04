@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet,  TouchableHighlight, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import Logo from "../../assets/media/logo.png";
 
@@ -18,7 +18,7 @@ const WelcomeScreen = ({ navigation }: any) => {
                 Sign Up
             </Button>
             <Text style={styles.loginText}>
-                Already have an account? <Text style={styles.loginLink} onPress={() => console.log('Login')}>Login</Text>
+                Already have an account? <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>Login</Text>
             </Text>
         </View>
     );

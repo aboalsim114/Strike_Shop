@@ -1,6 +1,6 @@
 import { User } from '../types';
 
-const API_URL = 'http://your-backend-url/api';
+const API_URL = 'http://proven-quietly-raptor.ngrok-free.app/api';
 
 export const loginApi = async (username: string, password: string) => {
     const response = await fetch(`${API_URL}/auth/login/`, {
@@ -27,6 +27,5 @@ export const loginApi = async (username: string, password: string) => {
 };
 
 export const logoutApi = async (refreshToken: string) => {
-
     return Promise.resolve();
 };
