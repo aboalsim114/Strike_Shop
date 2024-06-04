@@ -1,4 +1,3 @@
-// Importation des fonctions nécessaires
 import { User } from '../types';
 
 const API_URL = 'http://your-backend-url/api';

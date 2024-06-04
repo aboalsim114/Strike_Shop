@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet,  TouchableHighlight, Image } from 'react-native';
 import { Button } from 'react-native-paper';
+import Logo from "../../assets/media/logo.png";
 
 const WelcomeScreen = ({ navigation }: any) => {
     return (
         <View style={styles.container}>
 
             <Text style={styles.title}>Welcome</Text>
+            <Image source={Logo} style={styles.image} />
             <Text style={styles.subtitle}>Ready to start shopping? Sign up to get started.</Text>
             <Button
                 mode="contained"
-                onPress={() => console.log('SignUp')}
+                onPress={() => navigation.navigate('Register')}
                 style={styles.button}
             >
                 Sign Up
@@ -27,12 +29,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#ecf0f1',
         paddingHorizontal: 20,
     },
     image: {
-        width: 150,
-        height: 150,
+        width: 250,
+        height: 250,
         marginBottom: 20,
     },
     title: {
