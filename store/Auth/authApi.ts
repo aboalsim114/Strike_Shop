@@ -59,3 +59,40 @@ export const registerApi = async ({ username, email, password, first_name, last_
     };
 };
 
+
+
+
+
+
+
+
+
+
+export const getProfileApi = async (token: string): Promise<User> => {
+    try {
+        console.log('Fetching profile with token:', token);
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+        console.log('Headers:', headers); 
+
+        const response = await fetch(`${API_URL}/profile/`, {
+            method: 'GET',
+            headers: headers,
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('Error fetching profile:', error);
+            throw new Error(error.detail || 'Failed to fetch user profile');
+        }
+
+        const data = await response.json();
+        console.log('Profile data:', data); // Log the data received
+        return data;
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+    }
+};

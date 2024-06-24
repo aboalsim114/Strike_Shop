@@ -1,61 +1,67 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { Avatar, Button, Text, Title, TextInput } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { fetchUserProfile } from '../../store/Auth/authAsync';
 
-const Profile = () => {
+const Profile = ({ navigation }: any) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { user, loading, error } = useSelector((state: RootState) => state.profile);
+    const { tokens } = useSelector((state: RootState) => state.auth);
+
+    useEffect(() => {
+        if (tokens?.access) {
+            console.log('Fetching user profile with token:', tokens.access);
+            dispatch(fetchUserProfile(tokens.access));
+        }
+    }, [dispatch, tokens]);
+
+    if (loading) {
+        return <Text>Loading...</Text>;
+    }
+
+    if (error) {
+        console.log('Profile fetch error:', error);
+        return <Text>Error: {error}</Text>;
+    }
+
+    if (!user) {
+        return <Text>No user data available</Text>;
+    }
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.header}>
-                    <Avatar.Image size={100} source={{ uri: 'https://via.placeholder.com/150' }} style={styles.avatar} />
-                    <Title style={styles.name}>Anna Avetisyan</Title>
+                    <Avatar.Image size={100} source={{ uri: user.avatar || 'https://via.placeholder.com/150' }} style={styles.avatar} />
+                    <Title style={styles.name}>{user.first_name} {user.last_name}</Title>
                 </View>
                 <View style={styles.infoSection}>
                     <TextInput
                         label="Full Name"
-                        value="Anna Avetisyan"
+                        value={`${user.first_name} ${user.last_name}`}
                         left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="account" size={24} />} />}
                         style={styles.input}
                         editable={false}
                     />
                     <TextInput
-                        label="Birthday"
-                        value="Birthday"
-                        left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="calendar" size={24} />} />}
-                        style={styles.input}
-                        editable={false}
-                    />
-                    <TextInput
-                        label="Phone"
-                        value="818 123 4567"
-                        left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="phone" size={24} />} />}
-                        style={styles.input}
-                        editable={false}
-                    />
-                    <TextInput
-                        label="Instagram Account"
-                        value="Instagram account"
-                        left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="instagram" size={24} />} />}
+                        label="Username"
+                        value={user.username || ''}
+                        left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="account" size={24} />} />}
                         style={styles.input}
                         editable={false}
                     />
                     <TextInput
                         label="Email"
-                        value="info@aplusdesign.co"
+                        value={user.email || ''}
                         left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="email" size={24} />} />}
                         style={styles.input}
                         editable={false}
                     />
-                    <TextInput
-                        label="Password"
-                        value="Password"
-                        left={<TextInput.Icon icon={() => <MaterialCommunityIcons name="eye" size={24} />} />}
-                        style={styles.input}
-                        editable={false}
-                    />
                 </View>
-                <Button mode="contained" style={styles.editButton}>
+                <Button mode="contained" style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
                     Edit Profile
                 </Button>
             </ScrollView>
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginTop: 16,
-        color: '#fff',
+        color: '#000',
     },
     infoSection: {
         marginBottom: 16,
