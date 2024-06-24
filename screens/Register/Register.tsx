@@ -3,24 +3,37 @@ import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text, Title, Avatar } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Wavify from 'react-wavify';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { register } from '../../store/Auth/authAsync'; 
 
 const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    username: Yup.string().required('Username is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
-    phone: Yup.string().required('Phone is required'),
     password: Yup.string()
         .min(6, 'Password must be at least 6 characters')
         .required('Password is required'),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm Password is required'),
+    first_name: Yup.string().required('First name is required'),
+    last_name: Yup.string().required('Last name is required'),
 });
 
 const Register: React.FC = ({ navigation }: any) => {
-    const handleRegister = (values: any) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { isLoading, isError, isSuccess, errorMessage } = useSelector((state: RootState) => state.register);
 
+    const handleRegister = (values: any) => {
+        dispatch(register(values));
     };
+
+    React.useEffect(() => {
+        if (isSuccess) {
+            navigation.navigate('Login');
+            
+        }
+    }, [isSuccess]);
 
     return (
         <View style={styles.container}>
@@ -28,22 +41,22 @@ const Register: React.FC = ({ navigation }: any) => {
             <Title style={styles.title}>Let's Get Started!</Title>
             <Text style={styles.subtitle}>Create an account to get all features</Text>
             <Formik
-                initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
+                initialValues={{ username: '', email: '', password: '', confirmPassword: '', first_name: '', last_name: '' }}
                 validationSchema={RegisterSchema}
                 onSubmit={handleRegister}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     <View>
                         <TextInput
-                            label="Name"
+                            label="Username"
                             mode="outlined"
                             style={styles.input}
-                            onChangeText={handleChange('name')}
-                            onBlur={handleBlur('name')}
-                            value={values.name}
-                            error={touched.name && !!errors.name}
+                            onChangeText={handleChange('username')}
+                            onBlur={handleBlur('username')}
+                            value={values.username}
+                            error={touched.username && !!errors.username}
                         />
-                        {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
+                        {touched.username && errors.username && <Text style={styles.error}>{errors.username}</Text>}
 
                         <TextInput
                             label="Email"
@@ -56,6 +69,27 @@ const Register: React.FC = ({ navigation }: any) => {
                         />
                         {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
+                        <TextInput
+                            label="First Name"
+                            mode="outlined"
+                            style={styles.input}
+                            onChangeText={handleChange('first_name')}
+                            onBlur={handleBlur('first_name')}
+                            value={values.first_name}
+                            error={touched.first_name && !!errors.first_name}
+                        />
+                        {touched.first_name && errors.first_name && <Text style={styles.error}>{errors.first_name}</Text>}
+
+                        <TextInput
+                            label="Last Name"
+                            mode="outlined"
+                            style={styles.input}
+                            onChangeText={handleChange('last_name')}
+                            onBlur={handleBlur('last_name')}
+                            value={values.last_name}
+                            error={touched.last_name && !!errors.last_name}
+                        />
+                        {touched.last_name && errors.last_name && <Text style={styles.error}>{errors.last_name}</Text>}
 
                         <TextInput
                             label="Password"
@@ -81,7 +115,9 @@ const Register: React.FC = ({ navigation }: any) => {
                         />
                         {touched.confirmPassword && errors.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text>}
 
-                        <Button mode="contained" onPress={handleRegister} style={styles.button}>
+                        {isError && <Text style={styles.error}>{errorMessage}</Text>}
+
+                        <Button mode="contained" onPress={handleSubmit as any} style={styles.button} loading={isLoading} disabled={isLoading}>
                             CREATE
                         </Button>
                     </View>
