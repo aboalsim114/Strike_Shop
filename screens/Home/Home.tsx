@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo  } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, ImageBackground } from 'react-native';
 import { Text, Searchbar, Title, Paragraph } from 'react-native-paper';
 import CategoryList from '../../components/CategoryList';
@@ -6,7 +6,6 @@ import { fetchProducts } from '../../store/Products/productAsync';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
 import Product from '../../components/Product/Product';
-
 const HomeScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -16,6 +15,17 @@ const HomeScreen = () => {
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
+
+    const filteredProducts = useMemo(() => {
+        if (!searchQuery) {
+            return products;
+        }
+        const lowercasedQuery = searchQuery.toLowerCase();
+        return products?.filter(product =>
+            product.name.toLowerCase().includes(lowercasedQuery) ||
+            product.description.toLowerCase().includes(lowercasedQuery)
+        );
+    }, [searchQuery, products]);
 
     if (loading) {
         return <Text>Loading...</Text>;
@@ -40,7 +50,7 @@ const HomeScreen = () => {
                 <Title style={styles.productTitle}>Populaire</Title>
                 <Paragraph style={styles.productSubtitle}>Meilleures ventes | Nouveautés</Paragraph>
                 <View style={styles.productList}>
-                    {products && products.map((product) => (
+                    {filteredProducts && filteredProducts.map((product) => (
                         <Product
                             key={product.id}
                             id={product.id}
