@@ -7,6 +7,8 @@ import Login from '../screens/Login/Login'
 import TabNavigator from './TabNavigator';
 import PrivateRoute from '../components/PrivateRoute';
 import ProductDetailScreen from '../screens/ProductDetailScreen/ProductDetailScreen'
+import { IconButton } from 'react-native-paper';
+
 export type RootStackParamList = {
   WelcomeScreen: undefined;
   Register: undefined;
@@ -33,7 +35,22 @@ export default function RootStack() {
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="HomeTabs" component={AuthenticatedTabs} options={{ headerShown: false }} />
+            <Stack.Screen 
+                    name="HomeTabs" 
+                    component={AuthenticatedTabs} 
+                    options={{
+                        headerLeft: () => null,
+                        headerRight: () => (
+                            <IconButton 
+                                icon="cart" 
+                                onPress={() => console.log('Panier pressé')}
+                            />
+                        ),
+                        headerTitle: '',
+                       
+                        headerTintColor: '#fff',
+                    }} 
+                />
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ headerTitle: "" }} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -5,6 +5,7 @@ import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
 import { fetchProductById } from '../../store/Products/productAsync';
+import { fetchCategories } from '.../../store/Category/categoryAsync';
 import { RootStackParamList } from '../../navigation/index';
 
 const ProductDetailScreen = () => {
@@ -13,9 +14,11 @@ const ProductDetailScreen = () => {
     const { productId } = route.params;
     const dispatch = useDispatch<AppDispatch>();
     const { product, loading, error } = useSelector((state: RootState) => state.productDetail);
+    const { categories } = useSelector((state: RootState) => state.categories);
 
     useEffect(() => {
         dispatch(fetchProductById(productId));
+        dispatch(fetchCategories());
     }, [dispatch, productId]);
 
     if (loading) {
@@ -30,14 +33,20 @@ const ProductDetailScreen = () => {
         return <Text>No product found</Text>;
     }
 
+    const category = categories?.find((cat) => cat.id === product.category_id);
+    const categoryName = category ? category.name : 'Unknown';
+
+    const imageUrl = `http://proven-quietly-raptor.ngrok-free.app/${product.image}`;
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
           
-             <Image source={{ uri: `http://proven-quietly-raptor.ngrok-free.app${product.image}`}} style={styles.productImage} />
+            <Image source={{ uri: imageUrl }} style={styles.productImage} />
             <View style={styles.content}>
                 <Title style={styles.productTitle}>{product.name}</Title>
                 <Paragraph style={styles.description}>{product.description}</Paragraph>
                 <Paragraph style={styles.price}>Price: ${product.price}</Paragraph>
+                <Paragraph style={styles.category}>Category: {categoryName}</Paragraph>
                 <Paragraph style={{...styles.stock, color: product.stock ? 'green' : 'red'}}>
                     {product.stock ? 'In Stock' : 'Out of Stock'}
                 </Paragraph>
@@ -83,9 +92,12 @@ const styles = StyleSheet.create({
         color: '#ff5722',
         marginBottom: 16,
     },
+    category: {
+        fontSize: 16,
+        marginBottom: 16,
+    },
     stock: {
         fontSize: 16,
-        
         marginBottom: 16,
     },
 });
