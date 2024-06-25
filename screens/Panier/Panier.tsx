@@ -1,51 +1,55 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Title, Subheading, Button, Card, Divider, IconButton } from 'react-native-paper';
-
-const cartItems = [
-    {
-        id: '1',
-        name: 'StatTrak™ AK-47 | Redline',
-        price: 249.95,
-        quantity: 1,
-        imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-        id: '2',
-        name: 'AWP | Dragon Lore',
-        price: 289.95,
-        quantity: 1,
-        imageUrl: 'https://via.placeholder.com/150',
-    },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../store/store';
+import { fetchCartItems } from '../../store/Panier/cartAsync';
+import { Cart } from '../../store/types';
 
 const CartScreen = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { items, loading, error } = useSelector((state: RootState) => state.cart);
 
-    const renderCartItem = ({ item }: { item: typeof cartItems[0] }) => (
+    useEffect(() => {
+        dispatch(fetchCartItems());
+    }, [dispatch]);
+
+    const renderCartItem = ({ item }: { item: Cart }) => (
         <Card style={styles.cartItem}>
-            <Card.Cover source={{ uri: item.imageUrl }} style={styles.cartImage} />
-            <Card.Content>
-                <Title>{item.name}</Title>
-                <Subheading>${item.price.toFixed(2)}</Subheading>
-                <Text>Quantité: {item.quantity}</Text>
-            </Card.Content>
-            <Card.Actions>
-                <IconButton 
-                    icon="delete" 
-                    size={24} 
-                    onPress={() => console.log(`Supprimer ${item.name}`)}
-                />
-            </Card.Actions>
+            {item.product && (
+                <>
+                    <Card.Cover source={{ uri: item.product.image }} style={styles.cartImage} />
+                    <Card.Content>
+                        <Title>{item.product.name}</Title>
+                        <Text>Quantité: {item.quantity}</Text>
+                    </Card.Content>
+                    <Card.Actions>
+                        <IconButton 
+                            icon="delete" 
+                            size={24} 
+                            onPress={() => console.log(`Supprimer ${item.product.name}`)}
+                        />
+                    </Card.Actions>
+                </>
+            )}
         </Card>
     );
 
-    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const totalPrice = items.reduce((total, item) => total + (item.product ? item.product.price * item.quantity : 0), 0);
+
+    if (loading) {
+        return <Text>Loading...</Text>;
+    }
+
+    if (error) {
+        return <Text>Error: {error}</Text>;
+    }
 
     return (
         <View style={styles.container}>
             <Title style={styles.title}>Panier</Title>
             <FlatList
-                data={cartItems}
+                data={items}
                 renderItem={renderCartItem}
                 keyExtractor={(item) => item.id}
                 ItemSeparatorComponent={() => <Divider />}
@@ -77,6 +81,9 @@ const styles = StyleSheet.create({
     cartImage: {
         height: 150,
         resizeMode: 'cover',
+    },
+    deleteIcon: {
+        color: 'red',
     },
     footer: {
         padding: 16,

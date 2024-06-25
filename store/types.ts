@@ -10,7 +10,6 @@ export interface User {
     avatar: string;
 }
 
-
 export interface Category {
     id: string;
     name: string;
@@ -33,11 +32,12 @@ export interface Product {
 export interface Cart {
     id: string;
     user_id: string;
-    product_id: string;
+    product: Product;
     quantity: number;
     created_at: string;
     updated_at: string;
 }
+
 
 export interface ProductReview {
     id: string;
@@ -71,4 +71,10 @@ export interface OrderItem {
     product: string;
     quantity: number;
     unit_price: number;
+}
+
+export interface CartState {
+    items: Cart[];
+    loading: boolean;
+    error: string | null;
 }
