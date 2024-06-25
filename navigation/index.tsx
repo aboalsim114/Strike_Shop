@@ -6,12 +6,15 @@ import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen'
 import Login from '../screens/Login/Login'
 import TabNavigator from './TabNavigator';
 import PrivateRoute from '../components/PrivateRoute';
+import ProductDetailScreen from '../screens/ProductDetailScreen/ProductDetailScreen'
 export type RootStackParamList = {
   WelcomeScreen: undefined;
   Register: undefined;
   Login: undefined;
   HomeTabs: undefined;
+  ProductDetail: { productId: string };
 };
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -31,6 +34,7 @@ export default function RootStack() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="HomeTabs" component={AuthenticatedTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ headerTitle: "" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
