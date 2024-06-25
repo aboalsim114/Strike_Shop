@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
-import { Text, Title, Subheading, Button, Card, Divider, IconButton } from 'react-native-paper';
+import { View, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { Text, Title, Button, Card, IconButton, Badge } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
 import { fetchCartItems } from '../../store/Panier/cartAsync';
@@ -17,20 +17,21 @@ const CartScreen = () => {
     const renderCartItem = ({ item }: { item: Cart }) => (
         <Card style={styles.cartItem}>
             {item.product && (
-                <>
-                    <Card.Cover source={{ uri: item.product.image }} style={styles.cartImage} />
-                    <Card.Content>
-                        <Title>{item.product.name}</Title>
-                        <Text>Quantité: {item.quantity}</Text>
-                    </Card.Content>
-                    <Card.Actions>
-                        <IconButton 
-                            icon="delete" 
-                            size={24} 
-                            onPress={() => console.log(`Supprimer ${item.product.name}`)}
-                        />
-                    </Card.Actions>
-                </>
+                <View style={styles.cartItemContent}>
+                    <ImageBackground source={{ uri: item.product.image }} style={styles.cartImage} imageStyle={{ borderRadius: 10 }}>
+                        <Badge style={styles.quantityBadge}>{item.quantity}</Badge>
+                    </ImageBackground>
+                    <View style={styles.cartDetails}>
+                        <Title style={styles.productTitle}>{item.product.name}</Title>
+                        <Text style={styles.productPrice}>${item.product.price}</Text>
+                    </View>
+                    <IconButton 
+                        icon="delete" 
+                        size={24} 
+                        onPress={() => console.log(`Supprimer ${item.product.name}`)}
+                        style={styles.deleteIcon}
+                    />
+                </View>
             )}
         </Card>
     );
@@ -52,11 +53,10 @@ const CartScreen = () => {
                 data={items}
                 renderItem={renderCartItem}
                 keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={() => <Divider />}
             />
             <View style={styles.footer}>
-                <Text style={styles.totalText}>Total: ${totalPrice.toFixed(2)}</Text>
-                <Button mode="contained" onPress={() => console.log('Passer à la caisse')}>
+                <Text style={styles.totalText}>Total: ${totalPrice}</Text>
+                <Button mode="contained" onPress={() => console.log('Passer à la caisse')} style={styles.checkoutButton}>
                     Passer à la caisse
                 </Button>
             </View>
@@ -71,30 +71,64 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f8f8',
     },
     title: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 16,
+        textAlign: 'center',
     },
     cartItem: {
         marginBottom: 16,
+        borderRadius: 15,
+        elevation: 2,
+        backgroundColor: '#fff',
+    },
+    cartItemContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     cartImage: {
-        height: 150,
-        resizeMode: 'cover',
+        height: 100,
+        width: 100,
+        borderRadius: 10,
+        margin: 10,
+    },
+    quantityBadge: {
+        position: 'absolute',
+        top: -4,
+        right: -4,
+        backgroundColor: '#6200ee',
+        color: 'white',
+    },
+    cartDetails: {
+        flex: 1,
+        padding: 10,
+    },
+    productTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    productPrice: {
+        fontSize: 16,
+        color: '#6200ee',
     },
     deleteIcon: {
-        color: 'red',
+        marginRight: 10,
     },
     footer: {
         padding: 16,
         borderTopWidth: 1,
         borderTopColor: '#ddd',
         alignItems: 'center',
+        backgroundColor: '#fff',
     },
     totalText: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 8,
+    },
+    checkoutButton: {
+        width: '100%',
+        backgroundColor: '#6200ee',
     },
 });
 
