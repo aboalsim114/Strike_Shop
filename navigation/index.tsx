@@ -24,7 +24,7 @@ const AuthenticatedTabs: React.FC = () => {
       <TabNavigator />
     </PrivateRoute>
   );
-};
+};  
 
 export default function RootStack() {
   return (

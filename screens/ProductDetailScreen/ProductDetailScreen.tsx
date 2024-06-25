@@ -1,36 +1,46 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Text, Title, Paragraph, Button, IconButton } from 'react-native-paper';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../store/store';
+import { fetchProductById } from '../../store/Products/productAsync';
 import { RootStackParamList } from '../../navigation/index';
 
 const ProductDetailScreen = () => {
     const route = useRoute<RouteProp<RootStackParamList, 'ProductDetail'>>();
     const navigation = useNavigation();
     const { productId } = route.params;
-
-    const product = {
-        id: productId,
-        name: 'AWP | Dragon Lore',
-        description: 'AWP | Dragon Lore | Factory New',
-        price: '$289.95',
-        imageUrl: 'https://via.placeholder.com/150',
-    };
-
+    const dispatch = useDispatch<AppDispatch>();
+    const { product, loading, error } = useSelector((state: RootState) => state.productDetail);
 
     useEffect(() => {
-    console.log('Product ID:', productId);
-        
-},[productId, navigation])
+        dispatch(fetchProductById(productId));
+    }, [dispatch, productId]);
+
+    if (loading) {
+        return <Text>Loading...</Text>;
+    }
+
+    if (error) {
+        return <Text>Error: {error}</Text>;
+    }
+
+    if (!product) {
+        return <Text>No product found</Text>;
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            
-            <Image source={{ uri: product.imageUrl }} style={styles.productImage} />
+          
+             <Image source={{ uri: `http://proven-quietly-raptor.ngrok-free.app${product.image}`}} style={styles.productImage} />
             <View style={styles.content}>
                 <Title style={styles.productTitle}>{product.name}</Title>
                 <Paragraph style={styles.description}>{product.description}</Paragraph>
-                <Paragraph style={styles.price}>{product.price}</Paragraph>
+                <Paragraph style={styles.price}>Price: ${product.price}</Paragraph>
+                <Paragraph style={{...styles.stock, color: product.stock ? 'green' : 'red'}}>
+                    {product.stock ? 'In Stock' : 'Out of Stock'}
+                </Paragraph>
                 <Button mode="contained" onPress={() => console.log('Ajouter au Panier pressé')}>
                     Ajouter au Panier
                 </Button>
@@ -71,6 +81,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: '#ff5722',
+        marginBottom: 16,
+    },
+    stock: {
+        fontSize: 16,
+        
         marginBottom: 16,
     },
 });
