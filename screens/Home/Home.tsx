@@ -1,16 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, Dimensions } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { Text, Card, Button, Avatar, Searchbar, Title, Paragraph } from 'react-native-paper';
+import CategoryList from '../../components/CategoryList';
 
 const HomeScreen = () => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const onChangeSearch = (query: string) => setSearchQuery(query);
-    const categories = [
-        { name: 'Beats', icon: 'https://via.placeholder.com/50' },
-        { name: 'Sennheiser', icon: 'https://via.placeholder.com/50' },
-        { name: 'JBL', icon: 'https://via.placeholder.com/50' },
-        { name: 'Sony', icon: 'https://via.placeholder.com/50' },
-    ];
 
     const products = [
         {
@@ -27,7 +22,6 @@ const HomeScreen = () => {
             price: '$289.95',
             imageUrl: 'https://via.placeholder.com/150',
         },
-
     ];
 
     return (
@@ -40,19 +34,10 @@ const HomeScreen = () => {
                     style={styles.searchbar}
                 />
 
-                <View style={styles.categories}>
-                    <Title style={styles.categoryTitle}>Choose brand</Title>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
-                        {categories.map((category, index) => (
-                            <View key={index} style={styles.category}>
-                                <Avatar.Image size={50} source={{ uri: category.icon }} />
-                                <Button>{category.name}</Button>
-                            </View>
-                        ))}
-                    </ScrollView>
-                </View>
-                <Title style={styles.productTitle}>Popular</Title>
-                <Paragraph style={styles.productSubtitle}>Discount | Exclusive</Paragraph>
+                <CategoryList />
+
+                <Title style={styles.productTitle}>Populaire</Title>
+                <Paragraph style={styles.productSubtitle}>Discount | Exclusivité</Paragraph>
                 <View style={styles.productList}>
                     {products.map((product) => (
                         <Card key={product.id} style={styles.card}>
@@ -67,10 +52,10 @@ const HomeScreen = () => {
                             <Card.Cover source={{ uri: product.imageUrl }} />
                             <Card.Actions>
                                 <Button mode="contained" onPress={() => console.log('Buy Now pressed')} style={styles.button}>
-                                    Buy Now
+                                    Acheter Maintenant
                                 </Button>
                                 <Button onPress={() => console.log('Add to Cart pressed')} style={styles.button}>
-                                    Add to Cart
+                                    Ajouter au Panier
                                 </Button>
                             </Card.Actions>
                         </Card>
@@ -91,30 +76,6 @@ const styles = StyleSheet.create({
     },
     searchbar: {
         marginVertical: 16,
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: 16,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    categories: {
-        marginBottom: 16,
-    },
-    categoryTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    categoryScrollView: {
-        flexDirection: 'row',
-    },
-    category: {
-        alignItems: 'center',
-        marginRight: 16,
     },
     productTitle: {
         fontSize: 18,

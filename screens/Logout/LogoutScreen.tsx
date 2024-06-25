@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { resetState } from '../../store/Auth/AuthSlices/login';
+import {resetProfileState} from '../../store/Auth/AuthSlices/profileSlice'
 
 const LogoutScreen: React.FC = ({ navigation }: any) => {
     const dispatch = useDispatch();
@@ -9,6 +10,7 @@ const LogoutScreen: React.FC = ({ navigation }: any) => {
 
     useEffect(() => {
         dispatch(resetState());
+        dispatch(resetProfileState());
         navigation.navigate('WelcomeScreen');
     }, [dispatch, navigation]);
 
