@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Button, Avatar, Paragraph } from 'react-native-paper';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
@@ -6,6 +6,7 @@ import { RootStackParamList } from '../../navigation/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { addProductToCart } from '../../store/Panier/cartAsync';
+import { Image } from 'react-native';
 
 interface ProductProps {
     id: string;
@@ -14,6 +15,9 @@ interface ProductProps {
     price: number;
     image: string;
 }
+
+
+
 
 const Product: React.FC<ProductProps> = ({ id, name, description, price, image }) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -28,17 +32,23 @@ const Product: React.FC<ProductProps> = ({ id, name, description, price, image }
         }
     };
 
+
+
+    useEffect(() => {
+        console.log('image : ', image);
+        
+    })
+ 
+    
     return (
         <Card key={id} style={styles.card}>
             <Card.Title
                 title={name}
-                left={(props) => <Avatar.Image {...props} source={{ uri: image }} />}
             />
             <Card.Content>
                 <Paragraph>{description}</Paragraph>
                 <Paragraph style={styles.price}>${price}</Paragraph>
             </Card.Content>
-            <Card.Cover source={{ uri: image }} style={styles.cardImage} />
             <Card.Actions>
                 <Button mode="contained" onPress={() => navigation.navigate('ProductDetail', { productId: id })} style={styles.button}>
                     Voir plus
@@ -55,9 +65,11 @@ const styles = StyleSheet.create({
     card: {
         marginBottom: 16,
     },
-    cardImage: {
-        borderRadius: 10,
-    },
+    image: {
+    width: '100%', 
+    height: 200, 
+    resizeMode: 'cover' 
+  },
     price: {
         fontSize: 18,
         fontWeight: 'bold',
@@ -70,4 +82,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Product;
+export default Product

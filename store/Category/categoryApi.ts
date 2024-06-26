@@ -2,7 +2,7 @@
 import { Category } from '../types';
 
 
-const API_URL = 'http://proven-quietly-raptor.ngrok-free.app/api';
+const API_URL = 'http://192.168.8.23:8000/api';
 
 export const getCategoriesApi = async (): Promise<Category[]> => {
     try {

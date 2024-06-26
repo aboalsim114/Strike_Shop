@@ -1,6 +1,6 @@
 import { User } from '../types';
 
-const API_URL = 'http://proven-quietly-raptor.ngrok-free.app/api';
+const API_URL = 'http://192.168.8.23:8000/api';
 
 export const loginApi = async (username: string, password: string) => {
     const response = await fetch(`${API_URL}/login/`, {

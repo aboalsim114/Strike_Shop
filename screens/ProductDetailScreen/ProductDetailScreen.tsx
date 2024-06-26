@@ -36,7 +36,7 @@ const ProductDetailScreen = () => {
     const category = categories?.find((cat) => cat.id === product.category_id);
     const categoryName = category ? category.name : 'Unknown';
 
-    const imageUrl = `http://proven-quietly-raptor.ngrok-free.app/${product.image}`;
+    const imageUrl = `${product.image}`;
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -50,9 +50,7 @@ const ProductDetailScreen = () => {
                 <Paragraph style={{...styles.stock, color: product.stock ? 'green' : 'red'}}>
                     {product.stock ? 'In Stock' : 'Out of Stock'}
                 </Paragraph>
-                <Button mode="contained" onPress={() => console.log('Ajouter au Panier pressé')}>
-                    Ajouter au Panier
-                </Button>
+            
             </View>
         </ScrollView>
     );
@@ -68,11 +66,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 16,
     },
-    productImage: {
-        width: '100%',
-        height: 300,
-        borderRadius: 10,
-    },
+   productImage: {
+    width: '100%',
+    height: 300,
+    borderRadius: 10,  
+    resizeMode: 'cover'  
+},
+
     content: {
         marginTop: 16,
     },
