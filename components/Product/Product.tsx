@@ -1,12 +1,11 @@
-import React,{useEffect} from 'react';
-import { StyleSheet } from 'react-native';
-import { Card, Button, Avatar, Paragraph } from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Card, Button } from 'react-native-paper';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { addProductToCart } from '../../store/Panier/cartAsync';
-import { Image } from 'react-native';
 
 interface ProductProps {
     id: string;
@@ -16,13 +15,14 @@ interface ProductProps {
     image: string;
 }
 
-
-
-
 const Product: React.FC<ProductProps> = ({ id, name, description, price, image }) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const dispatch = useDispatch<AppDispatch>();
-    const { user } = useSelector((state: RootState) => state.auth);
+    const user = useSelector((state: RootState) => state.auth.user);
+
+    useEffect(() => {
+        console.log('Image URL:', image);
+    }, [image]);
 
     const handleAddToCart = () => {
         if (user?.id) {
@@ -32,54 +32,72 @@ const Product: React.FC<ProductProps> = ({ id, name, description, price, image }
         }
     };
 
-
-
-    useEffect(() => {
-        console.log('image : ', image);
-        
-    })
- 
-    
     return (
-        <Card key={id} style={styles.card}>
-            <Card.Title
-                title={name}
-            />
-            <Card.Content>
-                <Paragraph>{description}</Paragraph>
-                <Paragraph style={styles.price}>${price}</Paragraph>
-            </Card.Content>
-            <Card.Actions>
-                <Button mode="contained" onPress={() => navigation.navigate('ProductDetail', { productId: id })} style={styles.button}>
-                    Voir plus
-                </Button>
-                <Button onPress={handleAddToCart} style={styles.button}>
-                    Ajouter au Panier
-                </Button>
-            </Card.Actions>
+        <Card style={styles.card}>
+            <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { productId: id })}>
+                <Image source={{ uri: image }} style={styles.image} />
+            </TouchableOpacity>
+            <View style={styles.content}>
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.price}>${price}</Text>
+                <Text style={styles.description}>{description}</Text>
+                <View style={styles.buttonContainer}>
+                    <Button mode="outlined" onPress={() => navigation.navigate('ProductDetail', { productId: id })} style={styles.button}>
+                        See Details
+                    </Button>
+                    <Button mode="contained" onPress={handleAddToCart} style={[styles.button, styles.addToCartButton]}>
+                        Add to Cart
+                    </Button>
+                </View>
+            </View>
         </Card>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
-        marginBottom: 16,
+        margin: 10,
+        borderRadius: 10,
+        overflow: 'hidden',
+        elevation: 1,
+        backgroundColor: '#FFF'
     },
     image: {
-    width: '100%', 
-    height: 200, 
-    resizeMode: 'cover' 
-  },
-    price: {
+        width: '100%',
+        height: 200,
+        resizeMode: 'cover'
+    },
+    content: {
+        padding: 15
+    },
+    title: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#ff5722',
-        marginTop: 8,
+        marginBottom: 5
+    },
+    price: {
+        fontSize: 16,
+        color: '#03a9f4',
+        fontWeight: 'bold',
+        marginBottom: 5
+    },
+    description: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 10
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     button: {
-        marginLeft: 8,
-        backgroundColor: '#03a9f4',
+        flex: 1,
+        marginHorizontal: 5
     },
+    addToCartButton: {
+        backgroundColor: '#f0c14b', // Amazon's button color
+        borderColor: '#a88734' // Border color similar to Amazon's
+    }
 });
 
-export default Product
+export default Product;

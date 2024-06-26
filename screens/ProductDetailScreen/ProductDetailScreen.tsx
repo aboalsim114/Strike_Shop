@@ -7,7 +7,7 @@ import { RootState, AppDispatch } from '../../store/store';
 import { fetchProductById } from '../../store/Products/productAsync';
 import { fetchCategories } from '.../../store/Category/categoryAsync';
 import { RootStackParamList } from '../../navigation/index';
-
+import ProductReview from '../../components/ProductReview/ProductReview'
 const ProductDetailScreen = () => {
     const route = useRoute<RouteProp<RootStackParamList, 'ProductDetail'>>();
     const navigation = useNavigation();
@@ -40,7 +40,6 @@ const ProductDetailScreen = () => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-          
             <Image source={{ uri: imageUrl }} style={styles.productImage} />
             <View style={styles.content}>
                 <Title style={styles.productTitle}>{product.name}</Title>
@@ -50,7 +49,9 @@ const ProductDetailScreen = () => {
                 <Paragraph style={{...styles.stock, color: product.stock ? 'green' : 'red'}}>
                     {product.stock ? 'In Stock' : 'Out of Stock'}
                 </Paragraph>
-            
+            </View>
+            <View>
+            <ProductReview/>
             </View>
         </ScrollView>
     );
