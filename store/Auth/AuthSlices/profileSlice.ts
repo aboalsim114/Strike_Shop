@@ -1,6 +1,5 @@
-// src/features/auth/profileSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchUserProfile } from '../authAsync';
+import { fetchUserProfile, updateUserProfile } from '../authAsync';
 import { User } from '../../types';
 
 interface ProfileState {
@@ -33,13 +32,26 @@ const profileSlice = createSlice({
             })
             .addCase(fetchUserProfile.fulfilled, (state, action: PayloadAction<User>) => {
                 state.loading = false;
-                state.user = action.payload; // Correction ici
-                console.log('User profile updated in state:', state.user); // Log state update
+                state.user = action.payload;
             })
             .addCase(fetchUserProfile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
-                console.error('Profile fetch error:', action.payload);
+            })
+            .addCase(updateUserProfile.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<User>) => {
+                state.loading = false;
+                state.user = action.payload;
+                console.log('Updated user:', action.payload)
+            })
+            .addCase(updateUserProfile.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+                console.log('Error updating user:', state.error);
+                
             });
     },
 });

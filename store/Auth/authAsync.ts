@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { loginApi, logoutApi, registerApi, getProfileApi } from './authApi';
+import { loginApi, logoutApi, registerApi, getProfileApi, updateProfileApi } from './authApi';
 import {User} from '../types'
 
 export const login = createAsyncThunk(
@@ -59,3 +59,17 @@ export const fetchUserProfile = createAsyncThunk<User, string, { rejectValue: st
 
 
 
+
+
+
+export const updateUserProfile = createAsyncThunk<User, { token: string; userData: Partial<User> }, { rejectValue: string }>(
+    'auth/updateUserProfile',
+    async ({ token, userData }, { rejectWithValue }) => {
+        try {
+            const response = await updateProfileApi(token, userData);
+            return response;
+        } catch (err: any) {
+            return rejectWithValue(err.message);
+        }
+    }
+);

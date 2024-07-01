@@ -89,10 +89,35 @@ export const getProfileApi = async (token: string): Promise<User> => {
         }
 
         const data = await response.json();
-        console.log('Profile data:', data); // Log the data received
+        console.log('Profile data:', data); 
         return data;
     } catch (error) {
         console.error('Fetch error:', error);
         throw error;
     }
+};
+
+
+
+
+
+
+
+export const updateProfileApi = async (token: string, userData: Partial<User>): Promise<User> => {
+    const response = await fetch(`${API_URL}/profile/update/`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to update user profile');
+    }
+
+    const data = await response.json();
+    return data;
 };
