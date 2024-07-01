@@ -15,6 +15,13 @@ interface ProductProps {
     image: string;
 }
 
+const truncateDescription = (description: string, maxLength: number) => {
+    if (description.length <= maxLength) {
+        return description;
+    }
+    return description.slice(0, maxLength) + '...';
+};
+
 const Product: React.FC<ProductProps> = ({ id, name, description, price, image }) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +47,7 @@ const Product: React.FC<ProductProps> = ({ id, name, description, price, image }
             <View style={styles.content}>
                 <Text style={styles.title}>{name}</Text>
                 <Text style={styles.price}>${price}</Text>
-                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.description}>{truncateDescription(description, 100)}</Text>
                 <View style={styles.buttonContainer}>
                     <Button mode="outlined" onPress={() => navigation.navigate('ProductDetail', { productId: id })} style={styles.button}>
                         See Details

@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { Text, Title, Paragraph, Button, IconButton } from 'react-native-paper';
+import { Text, Title, Button, Paragraph } from 'react-native-paper';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
 import { fetchProductById } from '../../store/Products/productAsync';
-import { fetchCategories } from '.../../store/Category/categoryAsync';
+import { fetchCategories } from '../../store/Category/categoryAsync';
 import { RootStackParamList } from '../../navigation/index';
-import ProductReview from '../../components/ProductReview/ProductReview'
+import ProductReview from '../../components/ProductReview/ProductReview';
+import Markdown from 'react-native-markdown-display';
+
 const ProductDetailScreen = () => {
     const route = useRoute<RouteProp<RootStackParamList, 'ProductDetail'>>();
     const navigation = useNavigation();
@@ -43,7 +45,7 @@ const ProductDetailScreen = () => {
             <Image source={{ uri: imageUrl }} style={styles.productImage} />
             <View style={styles.content}>
                 <Title style={styles.productTitle}>{product.name}</Title>
-                <Paragraph style={styles.description}>{product.description}</Paragraph>
+                <Markdown >{product.description}</Markdown>
                 <Paragraph style={styles.price}>Price: ${product.price}</Paragraph>
                 <Paragraph style={styles.category}>Category: {categoryName}</Paragraph>
                 <Paragraph style={{...styles.stock, color: product.stock ? 'green' : 'red'}}>
@@ -51,10 +53,47 @@ const ProductDetailScreen = () => {
                 </Paragraph>
             </View>
             <View>
-            <ProductReview/>
+                <ProductReview/>
             </View>
         </ScrollView>
     );
+};
+
+const markdownStyles = {
+    body: {
+        fontSize: 16,
+        color: '#555',
+    },
+    heading1: {
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    heading2: {
+        fontSize: 22,
+        fontWeight: 'bold',
+    },
+    heading3: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    strong: {
+        fontWeight: 'bold',
+    },
+    em: {
+        fontStyle: 'italic',
+    },
+    listUnorderedItem: {
+        fontSize: 16,
+    },
+    listOrderedItem: {
+        fontSize: 16,
+    },
+    blockquote: {
+        paddingLeft: 10,
+        borderLeftWidth: 4,
+        borderLeftColor: '#d0d0d0',
+        fontStyle: 'italic',
+    },
 };
 
 const styles = StyleSheet.create({
@@ -62,18 +101,12 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#fff',
     },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 16,
+    productImage: {
+        width: '100%',
+        height: 300,
+        borderRadius: 10,
+        resizeMode: 'cover'
     },
-   productImage: {
-    width: '100%',
-    height: 300,
-    borderRadius: 10,  
-    resizeMode: 'cover'  
-},
-
     content: {
         marginTop: 16,
     },
@@ -81,11 +114,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 8,
-    },
-    description: {
-        fontSize: 16,
-        color: '#555',
-        marginBottom: 16,
     },
     price: {
         fontSize: 18,
