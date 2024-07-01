@@ -53,7 +53,7 @@ const ProductDetailScreen = () => {
                 </Paragraph>
             </View>
             <View>
-                <ProductReview/>
+              <ProductReview productId={productId} />
             </View>
         </ScrollView>
     );

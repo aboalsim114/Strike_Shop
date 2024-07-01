@@ -5,6 +5,7 @@ import profileReducer from './Auth/AuthSlices/profileSlice'
 import categoriesReducer from './Category/Slices/categorySlice'
 import productReducer from './Products/productSlice'
 import productDetailReducer from './Products/productDetailSlice'
+import CommentsReducer from './Comments/commentsSlice'
 import cartReducer from './Panier/cartSlice'
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     products: productReducer,
     productDetail: productDetailReducer,
     cart: cartReducer,
+    comments: CommentsReducer
 
 });
 
