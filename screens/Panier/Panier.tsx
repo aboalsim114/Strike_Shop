@@ -3,16 +3,23 @@ import { View, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { Text, Title, Button, Card, IconButton, Badge } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
-import { fetchCartItems } from '../../store/Panier/cartAsync';
+import { fetchCartItems, deleteCartItem } from '../../store/Panier/cartAsync';
 import { Cart } from '../../store/types';
 
 const CartScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { items, loading, error } = useSelector((state: RootState) => state.cart);
+    const { tokens } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         dispatch(fetchCartItems());
     }, [dispatch]);
+
+    const handleDelete = (itemId: string) => {
+        if (tokens?.access) {
+            dispatch(deleteCartItem({ token: tokens.access, itemId }));
+        }
+    };
 
     const renderCartItem = ({ item }: { item: Cart }) => (
         <Card style={styles.cartItem}>
@@ -28,7 +35,7 @@ const CartScreen = () => {
                     <IconButton 
                         icon="delete" 
                         size={24} 
-                        onPress={() => console.log(`Supprimer ${item.product.name}`)}
+                        onPress={() => handleDelete(item.id)}
                         style={styles.deleteIcon}
                     />
                 </View>

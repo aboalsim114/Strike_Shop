@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchCartItems, addProductToCart } from './cartAsync';
+import { fetchCartItems, addProductToCart, deleteCartItem } from './cartAsync';
 import { CartState, Cart } from '../types';
 
 const initialState: CartState = {
@@ -35,6 +35,18 @@ const cartSlice = createSlice({
                 state.items.push(action.payload);
             })
             .addCase(addProductToCart.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(deleteCartItem.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteCartItem.fulfilled, (state, action: PayloadAction<string>) => {
+                state.loading = false;
+                state.items = state.items.filter(item => item.id !== action.payload);
+            })
+            .addCase(deleteCartItem.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
