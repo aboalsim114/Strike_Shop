@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchCartItemsApi, addProductToCartApi } from './cartApi';
+import { fetchCartItemsApi, addProductToCartApi, deleteCartItemApi } from './cartApi';
 import { Cart } from '../types';
 
 export const fetchCartItems = createAsyncThunk<Cart[], void, { rejectValue: string }>(
@@ -22,6 +22,25 @@ export const addProductToCart = createAsyncThunk<Cart, { user_id: string, produc
             return data;
         } catch (error) {
             return rejectWithValue('Failed to add product to cart');
+        }
+    }
+);
+
+
+
+
+
+
+
+
+export const deleteCartItem = createAsyncThunk(
+    'cart/deleteCartItem',
+    async ({ token, itemId }: { token: string; itemId: string }, { rejectWithValue }) => {
+        try {
+            const response = await deleteCartItemApi(token, itemId);
+            return response;
+        } catch (err: any) {
+            return rejectWithValue(err.message);
         }
     }
 );
