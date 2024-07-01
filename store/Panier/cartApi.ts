@@ -1,6 +1,6 @@
 import { Cart } from '../types';
 
-const API_URL = 'http://192.168.11.54:8000/api';
+const API_URL = 'http://192.168.10.121:8000/api';
 
 export const fetchCartItemsApi = async (): Promise<Cart[]> => {
     const response = await fetch(`${API_URL}/cart/`, {
@@ -16,7 +16,6 @@ export const fetchCartItemsApi = async (): Promise<Cart[]> => {
 
     const cartItems = await response.json();
 
-    // Fetch product details for each cart item
     const cartItemsWithProducts = await Promise.all(
         cartItems.map(async (item: any) => {
             const productResponse = await fetch(`${API_URL}/products/${item.product_id}`);
