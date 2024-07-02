@@ -78,3 +78,21 @@ export interface CartState {
     loading: boolean;
     error: string | null;
 }
+
+
+
+export interface Review {
+    id: string;
+    product_id: string;
+    user_id: string;
+    comment: string;
+    username: string;
+    
+}
+
+
+export interface AddReviewPayload {
+    comment: string;
+    product_id: string;
+    user_id: string | null;
+}

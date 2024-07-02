@@ -1,94 +1,100 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Card, Button, Avatar } from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { Card, Avatar } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { fetchProductReviews } from '../../store/Comments/commentsAsync';
+import { Review } from '../../store/types';
+import { FontAwesome } from '@expo/vector-icons';
 
-const reviews = [
-    {
-        id: 1,
-        username: "JohnDoe92",
-        date: "2023-06-25",
-        avatarUrl: "https://via.placeholder.com/150",
-        comment: "Great product! Really helped me in my daily tasks.",
-        helpfulCount: 15
-    },
-    {
-        id: 2,
-        username: "JaneSmith",
-        date: "2023-06-20",
-        avatarUrl: "https://via.placeholder.com/150",
-        comment: "Not what I expected, but it works okay.",
-        helpfulCount: 5
+interface ProductReviewProps {
+    productId: string;
+}
+
+const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { reviews, loading, error } = useSelector((state: RootState) => state.comments);
+
+    useEffect(() => {
+        dispatch(fetchProductReviews(productId));
+    }, [dispatch, productId]);
+
+    if (loading) {
+        return <Text>Loading reviews...</Text>;
     }
-];
 
-export default function ProductReview() {
+    if (error) {
+        return <Text>Error loading reviews: {error}</Text>;
+    }
+
+    if (reviews.length === 0) {
+        return <Text>No reviews available</Text>;
+    }
+
     return (
         <ScrollView style={styles.container}>
-            {reviews.map((review) => (
+            {reviews.map((review: Review) => (
                 <Card key={review.id} style={styles.reviewCard}>
                     <View style={styles.header}>
-                        <Avatar.Image size={44} source={{ uri: review.avatarUrl }} style={styles.avatar} />
+                        <Avatar.Image size={44} source={{ uri:  'https://via.placeholder.com/150' }} style={styles.avatar} />
                         <View style={styles.headerText}>
                             <Text style={styles.username}>{review.username}</Text>
-                            <Text style={styles.date}>{review.date}</Text>
                         </View>
                     </View>
-                    <Text style={styles.comment}>{review.comment}</Text>
                   
+                    <Text style={styles.comment}>{review.comment}</Text>
                 </Card>
             ))}
         </ScrollView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10
+        padding: 10,
+        backgroundColor: '#f0f0f0',
     },
     reviewCard: {
-        marginBottom: 16,
+        marginBottom: 15,
         padding: 15,
-        borderRadius: 8,
-        elevation: 2,
-        backgroundColor: '#fff'
+        borderRadius: 10,
+        elevation: 3,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10
+        marginBottom: 10,
     },
     avatar: {
-        marginRight: 10
+        marginRight: 15,
     },
     headerText: {
         flex: 1,
     },
     username: {
         fontWeight: 'bold',
-        fontSize: 16
-    },
-    date: {
-        fontSize: 14,
-        color: '#666',
-        marginTop: 4
-    },
-    comment: {
         fontSize: 16,
         color: '#333',
-        marginBottom: 12,
-        lineHeight: 24  // This improves readability
     },
-    actions: {
+    date: {
+        fontSize: 12,
+        color: '#999',
+        marginTop: 2,
+    },
+    rating: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10
+        alignItems: 'center',
+        marginBottom: 10,
     },
-    report: {
-        color: '#FF6347',
-        fontWeight: 'bold'
+    comment: {
+        fontSize: 14,
+        color: '#333',
+        lineHeight: 20,
     },
-    helpfulButton: {
-        backgroundColor: '#f0f0f0'  // A light background for the button
-    }
 });
+
+export default ProductReview;

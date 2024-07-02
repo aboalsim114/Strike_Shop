@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 5
     },
     addToCartButton: {
-        backgroundColor: '#f0c14b', // Amazon's button color
-        borderColor: '#a88734' // Border color similar to Amazon's
+        backgroundColor: '#f0c14b', 
+        borderColor: '#a88734' 
     }
 });
 
