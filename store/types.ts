@@ -89,3 +89,10 @@ export interface Review {
     username: string;
     
 }
+
+
+export interface AddReviewPayload {
+    comment: string;
+    product_id: string;
+    user_id: string | null;
+}

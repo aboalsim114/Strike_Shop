@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { Text, Title, Button, Paragraph } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Image , Text} from 'react-native';
+import {  Title, Button, Paragraph } from 'react-native-paper';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
@@ -9,6 +9,7 @@ import { fetchCategories } from '../../store/Category/categoryAsync';
 import { RootStackParamList } from '../../navigation/index';
 import ProductReview from '../../components/ProductReview/ProductReview';
 import Markdown from 'react-native-markdown-display';
+import AddReview from '../../components/AddReview/AddReview';
 
 const ProductDetailScreen = () => {
     const route = useRoute<RouteProp<RootStackParamList, 'ProductDetail'>>();
@@ -53,6 +54,7 @@ const ProductDetailScreen = () => {
                 </Paragraph>
             </View>
             <View>
+                <AddReview productId={productId} />
               <ProductReview productId={productId} />
             </View>
         </ScrollView>

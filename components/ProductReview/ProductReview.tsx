@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { Card, Avatar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchProductReviews } from '../../store/Comments/commentsAsync';
 import { Review } from '../../store/types';
+import { FontAwesome } from '@expo/vector-icons';
 
 interface ProductReviewProps {
     productId: string;
@@ -35,10 +36,12 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
             {reviews.map((review: Review) => (
                 <Card key={review.id} style={styles.reviewCard}>
                     <View style={styles.header}>
+                        <Avatar.Image size={44} source={{ uri:  'https://via.placeholder.com/150' }} style={styles.avatar} />
                         <View style={styles.headerText}>
                             <Text style={styles.username}>{review.username}</Text>
                         </View>
                     </View>
+                  
                     <Text style={styles.comment}>{review.comment}</Text>
                 </Card>
             ))}
@@ -49,40 +52,48 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10
+        padding: 10,
+        backgroundColor: '#f0f0f0',
     },
     reviewCard: {
-        marginBottom: 16,
+        marginBottom: 15,
         padding: 15,
-        borderRadius: 8,
-        elevation: 2,
-        backgroundColor: '#fff'
+        borderRadius: 10,
+        elevation: 3,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10
+        marginBottom: 10,
     },
     avatar: {
-        marginRight: 10
+        marginRight: 15,
     },
     headerText: {
         flex: 1,
     },
     username: {
         fontWeight: 'bold',
-        fontSize: 16
-    },
-    date: {
-        fontSize: 14,
-        color: '#666',
-        marginTop: 4
-    },
-    comment: {
         fontSize: 16,
         color: '#333',
-        marginBottom: 12,
-        lineHeight: 24  // This improves readability
+    },
+    date: {
+        fontSize: 12,
+        color: '#999',
+        marginTop: 2,
+    },
+    rating: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    comment: {
+        fontSize: 14,
+        color: '#333',
+        lineHeight: 20,
     },
 });
 

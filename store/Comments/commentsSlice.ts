@@ -1,7 +1,6 @@
 // src/store/Reviews/reviewSlice.ts
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchProductReviews } from './commentsAsync';
+import { fetchProductReviews, addProductReview } from './commentsAsync';
 import { Review } from '../types';
 
 interface ReviewState {
@@ -31,6 +30,18 @@ const reviewSlice = createSlice({
                 state.reviews = action.payload;
             })
             .addCase(fetchProductReviews.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(addProductReview.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addProductReview.fulfilled, (state, action: PayloadAction<Review>) => {
+                state.loading = false;
+                state.reviews.push(action.payload);
+            })
+            .addCase(addProductReview.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
