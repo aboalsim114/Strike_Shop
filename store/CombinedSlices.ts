@@ -7,6 +7,7 @@ import productReducer from './Products/productSlice'
 import productDetailReducer from './Products/productDetailSlice'
 import CommentsReducer from './Comments/commentsSlice'
 import cartReducer from './Panier/cartSlice'
+import paymentSlice from './Payment/paymentSlice';
 const rootReducer = combineReducers({
     auth: authReducer,
     register: registerReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     products: productReducer,
     productDetail: productDetailReducer,
     cart: cartReducer,
-    comments: CommentsReducer
+    comments: CommentsReducer,
+    payment : paymentSlice
 
 });
 

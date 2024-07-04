@@ -12,7 +12,7 @@ import { IconButton, Badge } from 'react-native-paper';
 import PanierScreen from '../screens/Panier/Panier';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-
+import PaymentScreen from '../screens/PaymentScreen/PaymentScreen'
 export type RootStackParamList = {
     WelcomeScreen: undefined;
     Register: undefined;
@@ -20,6 +20,7 @@ export type RootStackParamList = {
     HomeTabs: undefined;
     ProductDetail: { productId: string };
     Panier: undefined;
+    PaymentScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -57,6 +58,7 @@ const RootStack = () => {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Panier" component={PanierScreen} options={{ headerTitle: "Panier" }} />
+                <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerTitle: "PaymentScreen" }} />
                 <Stack.Screen 
                     name="HomeTabs" 
                     component={AuthenticatedTabs} 

@@ -6,7 +6,7 @@ import { RootState, AppDispatch } from '../../store/store';
 import { fetchCartItems, deleteCartItem } from '../../store/Panier/cartAsync';
 import { Cart } from '../../store/types';
 
-const CartScreen = () => {
+const CartScreen = ({navigation}: any) => {
     const dispatch = useDispatch<AppDispatch>();
     const { items, loading, error } = useSelector((state: RootState) => state.cart);
     const { tokens } = useSelector((state: RootState) => state.auth);
@@ -63,13 +63,13 @@ const CartScreen = () => {
             />
             <View style={styles.footer}>
                 <Text style={styles.totalText}>Total: ${totalPrice}</Text>
-                <Button mode="contained" onPress={() => console.log('Passer à la caisse')} style={styles.checkoutButton} disabled={items.length < 0}>
+                <Button mode="contained" onPress={() => navigation.navigate("PaymentScreen")} style={styles.checkoutButton} disabled={items.length < 0}>
                     Passer à la caisse
                 </Button>
             </View>
         </View>
     );
-};
+}; 
 
 const styles = StyleSheet.create({
     container: {
