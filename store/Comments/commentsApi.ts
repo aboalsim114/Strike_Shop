@@ -1,6 +1,6 @@
 import { Review, AddReviewPayload } from '../types';
 
-const API_URL = 'http://192.168.9.166:8000/api';
+const API_URL = 'http://192.168.11.197:8000/api';
 
 export const fetchReviewsApi = async (productId: string): Promise<Review[]> => {
     const response = await fetch(`${API_URL}/products/${productId}/reviews/`);
