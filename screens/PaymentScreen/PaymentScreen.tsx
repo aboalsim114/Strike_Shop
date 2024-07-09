@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Text, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
 import { createPaymentIntent } from '../../store/Payment/paymentAsync';
@@ -52,15 +52,21 @@ const PaymentScreen: React.FC = () => {
     const handleOpenPaymentSheet = async () => {
         const { error } = await presentPaymentSheet();
         if (error) {
-            console.error('Error presenting payment sheet', error);
+            Alert.alert('Error', 'Error presenting payment sheet');
         } else {
-            console.log('Payment confirmed');
+            Alert.alert('Success', 'Payment confirmed');
         }
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Payment</Text>
+        <ScrollView contentContainerStyle={styles.container}>
+            <Title style={styles.title}>Payment</Title>
+            <Card style={styles.card}>
+                <Card.Content>
+                    <Title style={styles.amountTitle}>Total Amount</Title>
+                    <Paragraph style={styles.amount}>{amount.toFixed(2)} €</Paragraph>
+                </Card.Content>
+            </Card>
             <Button
                 mode="contained"
                 onPress={handleOpenPaymentSheet}
@@ -68,28 +74,43 @@ const PaymentScreen: React.FC = () => {
                 disabled={!clientSecret || loading}
                 style={styles.payButton}
             >
-                Pay {amount} €
+                Pay {amount.toFixed(2)} €
             </Button>
             {error && <Text style={styles.errorText}>{error}</Text>}
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
         padding: 16,
         backgroundColor: '#f8f8f8',
     },
     title: {
         fontSize: 26,
         fontWeight: 'bold',
-        marginBottom: 16,
-        textAlign: 'center',
+        marginBottom: 20,
+    },
+    card: {
+        width: '100%',
+        marginVertical: 20,
+    },
+    amountTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    amount: {
+        fontSize: 18,
+        color: '#000',
     },
     payButton: {
+        width: '100%',
+        paddingVertical: 10,
         backgroundColor: '#6200ee',
-        marginTop: 20,
     },
     errorText: {
         color: 'red',

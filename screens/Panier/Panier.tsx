@@ -63,7 +63,7 @@ const CartScreen = ({navigation}: any) => {
             />
             <View style={styles.footer}>
                 <Text style={styles.totalText}>Total: ${totalPrice}</Text>
-                <Button mode="contained" onPress={() => navigation.navigate("PaymentScreen")} style={styles.checkoutButton} disabled={items.length < 0}>
+                <Button mode="contained" onPress={() => navigation.navigate("PaymentScreen")} style={styles.checkoutButton} disabled={items.length <= 0}>
                     Passer à la caisse
                 </Button>
             </View>

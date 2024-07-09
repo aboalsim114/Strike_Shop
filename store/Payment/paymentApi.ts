@@ -1,5 +1,5 @@
 
-const API_URL = 'http://192.168.1.24:8000/api';
+const API_URL = 'http://192.168.8.187:8000/api';
 
 export const createPaymentIntentApi = async (amount: number): Promise<string> => {
     const response = await fetch(`${API_URL}/create-payment-intent/`, {

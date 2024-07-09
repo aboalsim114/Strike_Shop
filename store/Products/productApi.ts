@@ -1,6 +1,6 @@
 import { Product } from '../types';
 
-const API_URL = 'http://192.168.1.24:8000/api';
+const API_URL = 'http://192.168.8.187:8000/api';
 
 export const getProductsApi = async (): Promise<Product[]> => {
     const response = await fetch(`${API_URL}/products/`, {
