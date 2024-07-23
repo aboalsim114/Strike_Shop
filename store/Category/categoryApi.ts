@@ -2,7 +2,7 @@
 import { Category } from '../types';
 
 
-const API_URL = 'http://192.168.8.187:8000/api';
+const API_URL = 'http:/192.168.8.83:8000/api';
 
 export const getCategoriesApi = async (): Promise<Category[]> => {
     try {

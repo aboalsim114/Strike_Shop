@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { View, StyleSheet, FlatList, ImageBackground , Dimensions} from 'react-native';
 import { Text, Title, Button, Card, IconButton, Badge } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
@@ -20,6 +20,9 @@ const CartScreen = ({navigation}: any) => {
             dispatch(deleteCartItem({ token: tokens.access, itemId }));
         }
     };
+
+
+   
 
     const renderCartItem = ({ item }: { item: Cart }) => (
         <Card style={styles.cartItem}>
@@ -63,8 +66,8 @@ const CartScreen = ({navigation}: any) => {
             />
             <View style={styles.footer}>
                 <Text style={styles.totalText}>Total: ${totalPrice}</Text>
-                <Button mode="contained" onPress={() => navigation.navigate("PaymentScreen")} style={styles.checkoutButton} disabled={items.length <= 0}>
-                    Passer à la caisse
+                <Button mode="contained" onPress={() => navigation.navigate("PaymentScreen")} style={{backgroundColor: items.length > 0 ? '#6200ee' : "" , width: "100%"}} disabled={items.length <= 0}>
+                  {items.length > 0 ? "Passer à la caisse"  : "vous avez rien dans le panier"}  
                 </Button>
             </View>
         </View>
@@ -93,11 +96,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    cartImage: {
-        height: 100,
-        width: 100,
+      cartImage: {
+        height: Dimensions.get('window').width * 0.3,
+        width: Dimensions.get('window').width * 0.3,
         borderRadius: 10,
-        margin: 10,
+        marginRight: 10,
     },
     quantityBadge: {
         position: 'absolute',
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     },
     checkoutButton: {
         width: '100%',
-        backgroundColor: '#6200ee',
+        // backgroundColor: '#6200ee',
     },
 });
 

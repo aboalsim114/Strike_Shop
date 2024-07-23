@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity,Dimensions  } from 'react-native';
 import { Card, Button } from 'react-native-paper';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/index';
@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
         elevation: 1,
         backgroundColor: '#FFF'
     },
-    image: {
+   image: {
         width: '100%',
-        height: 200,
-        resizeMode: 'cover'
+        height: Dimensions.get('window').width * 0.5, 
+        resizeMode: 'contain', 
     },
     content: {
         padding: 15

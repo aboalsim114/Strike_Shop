@@ -6,6 +6,7 @@ import { AppDispatch } from '../../store/store';
 import { login } from '../../store/Auth/authAsync';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+
 const WelcomeScreen = ({ navigation }: any) => {
     const dispatch = useDispatch<AppDispatch>();
     const { isAuthenticated, tokens, error, loading } = useSelector((state: RootState) => state.auth);
@@ -16,25 +17,24 @@ const WelcomeScreen = ({ navigation }: any) => {
 
     useEffect(() => {
         if (isAuthenticated && tokens.access) {
-            navigation.navigate('HomeTabs')
+            navigation.navigate('HomeTabs');
         }
     }, [isAuthenticated, tokens, navigation]);
 
     return (
         <View style={styles.container}>
-
-            <Text style={styles.title}>Welcome</Text>
+            <Text style={styles.title}>Bienvenue</Text>
             <Image source={Logo} style={styles.image} />
-            <Text style={styles.subtitle}>Ready to start shopping? Sign up to get started.</Text>
+            <Text style={styles.subtitle}>Prêt à commencer vos achats ? Inscrivez-vous pour démarrer.</Text>
             <Button
                 mode="contained"
                 onPress={() => navigation.navigate('Register')}
                 style={styles.button}
             >
-                Sign Up
+                S'inscrire
             </Button>
             <Text style={styles.loginText}>
-                Already have an account? <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>Login</Text>
+                Vous avez déjà un compte ? <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>Connexion</Text>
             </Text>
         </View>
     );

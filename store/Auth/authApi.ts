@@ -1,6 +1,6 @@
 import { User } from '../types';
 
-const API_URL = 'http://192.168.8.187:8000/api';
+const API_URL = 'http:/192.168.8.83:8000/api';
 
 export const loginApi = async (username: string, password: string) => {
     const response = await fetch(`${API_URL}/login/`, {

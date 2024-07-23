@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Image , Text} from 'react-native';
+import { View, StyleSheet, ScrollView, Image , Text,Dimensions} from 'react-native';
 import {  Title, Button, Paragraph } from 'react-native-paper';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -105,9 +105,8 @@ const styles = StyleSheet.create({
     },
     productImage: {
         width: '100%',
-        height: 300,
-        borderRadius: 10,
-        resizeMode: 'cover'
+        height: Dimensions.get('window').width * 0.5, 
+        resizeMode: 'contain', 
     },
     content: {
         marginTop: 16,
