@@ -31,6 +31,7 @@ const PaymentScreen: React.FC = () => {
   }, [items, calculateTotalAmount]);
 
   const handleCreatePaymentIntent = async () => {
+    console.log("Creating payment intent...");
     if (!tokens?.access) {
       Alert.alert('Error', 'User is not authenticated');
       return;
@@ -46,18 +47,26 @@ const PaymentScreen: React.FC = () => {
     });
 
     if (error) {
+      console.error("Payment method error:", error.message);
       Alert.alert('Error', `Failed to create payment method: ${error.message}`);
       return;
     }
 
     if (paymentMethod) {
-      dispatch(resetClientSecret());
-      dispatch(createPaymentIntent({ amount, paymentMethodId: paymentMethod.id, token: tokens.access }));
+      console.log("Payment method created:", paymentMethod.id);
+      
+      dispatch(createPaymentIntent({
+        amount, 
+     paymentMethodId: paymentMethod.id,
+    token: tokens.access, 
+    currency: "eur"
+      }));
     }
   };
 
   useEffect(() => {
     if (clientSecret) {
+      console.log("Client secret received:", clientSecret);
       initializePaymentSheet();
     }
   }, [clientSecret]);
@@ -101,20 +110,19 @@ const PaymentScreen: React.FC = () => {
 
       {/* CardField for card details input */}
       <CardField
-  postalCodeEnabled={true}
-  placeholders={{
-    number: '4242 4242 4242 4242',
-  }}
-  cardStyle={{
-    backgroundColor: '#FFFFFF',  
-    textColor: '#000000',
-  }}
-  style={styles.cardFieldContainer}
-  onCardChange={(cardDetails) => {
-    setCardDetailsComplete(cardDetails.complete);
-  }}
-/>
-
+        postalCodeEnabled={true}
+        placeholders={{
+          number: '4242 4242 4242 4242',
+        }}
+        cardStyle={{
+          backgroundColor: '#FFFFFF',  
+          textColor: '#000000',
+        }}
+        style={styles.cardFieldContainer}
+        onCardChange={(cardDetails) => {
+          setCardDetailsComplete(cardDetails.complete);
+        }}
+      />
 
       <Button
         mode="contained"
