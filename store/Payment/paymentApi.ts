@@ -1,11 +1,11 @@
+const API_URL = 'http://192.168.11.102:8000/api'; 
 
-const API_URL = 'http:/192.168.8.83:8000/api';
-
-export const createPaymentIntentApi = async (amount: number): Promise<string> => {
-    const response = await fetch(`${API_URL}/create-payment-intent/`, {
+export const createPaymentIntentApi = async (amount: number, token: string): Promise<string> => {
+    const response = await fetch(`${API_URL}/process-payment/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ amount }),
     });

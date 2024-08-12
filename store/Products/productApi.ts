@@ -1,6 +1,6 @@
 import { Product } from '../types';
 
-const API_URL = 'http:/192.168.8.83:8000/api';
+const API_URL = 'http:/192.168.11.102:8000/api';
 
 export const getProductsApi = async (): Promise<Product[]> => {
     const response = await fetch(`${API_URL}/products/`, {
@@ -8,6 +8,7 @@ export const getProductsApi = async (): Promise<Product[]> => {
         headers: {
             'Content-Type': 'application/json',
         },
+        
     });
 
     if (!response.ok) {

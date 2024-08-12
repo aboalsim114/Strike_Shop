@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createPaymentIntent } from './paymentAsync';
 
@@ -17,7 +16,11 @@ const initialState: PaymentState = {
 const paymentSlice = createSlice({
     name: 'payment',
     initialState,
-    reducers: {},
+    reducers: {
+        resetClientSecret: (state) => {
+            state.clientSecret = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createPaymentIntent.pending, (state) => {
@@ -35,4 +38,5 @@ const paymentSlice = createSlice({
     },
 });
 
+export const { resetClientSecret } = paymentSlice.actions;
 export default paymentSlice.reducer;

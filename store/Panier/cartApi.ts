@@ -1,6 +1,6 @@
 import { Cart } from '../types';
 
-const API_URL = 'http:/192.168.8.83:8000/api';
+const API_URL = 'http:/192.168.11.102:8000/api';
 
 export const fetchCartItemsApi = async (): Promise<Cart[]> => {
     const response = await fetch(`${API_URL}/cart/`, {
