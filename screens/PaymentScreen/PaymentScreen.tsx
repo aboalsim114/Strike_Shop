@@ -7,7 +7,7 @@ import { initStripe, useStripe, CardField } from '@stripe/stripe-react-native';
 import { createPaymentIntent } from '../../store/Payment/paymentAsync';
 import { resetClientSecret } from '../../store/Payment/paymentSlice';
 
-const PaymentScreen: React.FC = () => {
+const PaymentScreen: React.FC = ({navigation}:any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((state: RootState) => state.cart);
   const { tokens } = useSelector((state: RootState) => state.auth);
@@ -60,7 +60,12 @@ const PaymentScreen: React.FC = () => {
      paymentMethodId: paymentMethod.id,
     token: tokens.access, 
     currency: "eur"
-      }));
+      }))
+       .unwrap()
+            .then(() => {
+                // Rediriger vers OrderScreen après succès du paiement
+                navigation.navigate('OrdersScreen');
+            })
     }
   };
 
@@ -93,6 +98,9 @@ const PaymentScreen: React.FC = () => {
       } else {
         Alert.alert('Success', 'Payment confirmed');
       }
+
+
+      
     } catch (error: any) {
       Alert.alert('Error', `Unexpected error: ${error.message}`);
     }

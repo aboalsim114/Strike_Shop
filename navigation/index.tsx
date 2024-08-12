@@ -12,7 +12,9 @@ import { IconButton, Badge } from 'react-native-paper';
 import PanierScreen from '../screens/Panier/Panier';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import PaymentScreen from '../screens/PaymentScreen/PaymentScreen'
+import PaymentScreen from '../screens/PaymentScreen/PaymentScreen';
+import OrdersScreen from '../screens/Orders/OrdersScreen';
+
 export type RootStackParamList = {
     WelcomeScreen: undefined;
     Register: undefined;
@@ -21,6 +23,7 @@ export type RootStackParamList = {
     ProductDetail: { productId: string };
     Panier: undefined;
     PaymentScreen: undefined;
+    OrdersScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -50,6 +53,17 @@ const CartIconWithBadge = ({ navigation }: any) => {
     );
 };
 
+const OrdersIcon = ({ navigation }: any) => {
+    return (
+        <View style={styles.iconContainer}>
+            <IconButton 
+                icon="clipboard-list"  // Utilisation d'une icône pour les commandes
+                onPress={() => navigation.navigate('OrdersScreen')}
+            />
+        </View>
+    );
+};
+
 const RootStack = () => {
     return (
         <NavigationContainer>
@@ -63,13 +77,14 @@ const RootStack = () => {
                     name="HomeTabs" 
                     component={AuthenticatedTabs} 
                     options={({ navigation }) => ({
-                        headerLeft: () => null,
+                        headerLeft: () => <OrdersIcon navigation={navigation} />,
                         headerRight: () => <CartIconWithBadge navigation={navigation} />,
                         headerTitle: '',
                         headerTintColor: '#fff',
                     })} 
                 />
                 <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ headerTitle: "" }} />
+                <Stack.Screen name="OrdersScreen" component={OrdersScreen} options={{ headerTitle: "Mes Commandes" }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
