@@ -54,12 +54,17 @@ const CartIconWithBadge = ({ navigation }: any) => {
 };
 
 const OrdersIcon = ({ navigation }: any) => {
+        const {ongoingOrders} = useSelector((state: RootState) => state.orders);
+
     return (
         <View style={styles.iconContainer}>
             <IconButton 
                 icon="clipboard-list"  // Utilisation d'une icône pour les commandes
                 onPress={() => navigation.navigate('OrdersScreen')}
             />
+            {ongoingOrders.length > 0 &&
+            <Badge style={styles.badge}>{ongoingOrders.length}</Badge>
+            }
         </View>
     );
 };

@@ -20,7 +20,7 @@ const OrdersScreen: React.FC = () => {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#6200ee" />
-                <Text style={styles.loadingText}>Loading your orders...</Text>
+                <Text style={styles.loadingText}>Chargement de vos commandes...</Text>
             </View>
         );
     }
@@ -28,7 +28,7 @@ const OrdersScreen: React.FC = () => {
     if (error) {
         return (
             <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Error: {error}</Text>
+                <Text style={styles.errorText}>Erreur : {error}</Text>
             </View>
         );
     }
@@ -36,44 +36,44 @@ const OrdersScreen: React.FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.section}>
-                <Title style={styles.title}>Ongoing Orders</Title>
+                <Title style={styles.title}>Commandes en cours</Title>
                 {ongoingOrders.length > 0 ? (
                     ongoingOrders.map((order) => (
                         <Card key={order.id} style={styles.card}>
                             <Card.Content>
                                 <View style={styles.cardHeader}>
-                                    <Text style={styles.orderId}>Order #{order.id}</Text>
-                                    <IconButton icon="clock-outline" size={20}  />
+                                    <Text style={styles.orderId}>Commande #{order.id}</Text>
+                                    <IconButton icon="clock-outline" size={20} />
                                 </View>
-                                <Paragraph>Status: <Text style={styles.status}>{order.status}</Text></Paragraph>
-                                <Paragraph>Total: <Text style={styles.amount}>{order.total_amount} €</Text></Paragraph>
-                                <Button mode="outlined" onPress={() => {}} style={styles.button}>View Details</Button>
+                                <Paragraph>Statut : <Text style={styles.status}>{order.status}</Text></Paragraph>
+                                <Paragraph>Total : <Text style={styles.amount}>{order.total_amount} €</Text></Paragraph>
+                                <Button mode="outlined" onPress={() => {}} style={styles.button}>Voir les détails</Button>
                             </Card.Content>
                         </Card>
                     ))
                 ) : (
-                    <Text style={styles.noOrdersText}>No ongoing orders.</Text>
+                    <Text style={styles.noOrdersText}>Aucune commande en cours.</Text>
                 )}
             </View>
 
             <View style={styles.section}>
-                <Title style={styles.title}>Past Orders</Title>
+                <Title style={styles.title}>Commandes passées</Title>
                 {pastOrders.length > 0 ? (
                     pastOrders.map((order) => (
                         <Card key={order.id} style={styles.card}>
                             <Card.Content>
                                 <View style={styles.cardHeader}>
-                                    <Text style={styles.orderId}>Order #{order.id}</Text>
+                                    <Text style={styles.orderId}>Commande #{order.id}</Text>
                                     <IconButton icon="check-circle-outline" size={20} />
                                 </View>
-                                <Paragraph>Status: <Text style={styles.status}>{order.status}</Text></Paragraph>
-                                <Paragraph>Total: <Text style={styles.amount}>{order.total_amount} €</Text></Paragraph>
-                                <Button mode="outlined" onPress={() => {}} style={styles.button}>Reorder</Button>
+                                <Paragraph>Statut : <Text style={styles.status}>{order.status}</Text></Paragraph>
+                                <Paragraph>Total : <Text style={styles.amount}>{order.total_amount} €</Text></Paragraph>
+                                <Button mode="outlined" onPress={() => {}} style={styles.button}>Commander à nouveau</Button>
                             </Card.Content>
                         </Card>
                     ))
                 ) : (
-                    <Text style={styles.noOrdersText}>No past orders.</Text>
+                    <Text style={styles.noOrdersText}>Aucune commande passée.</Text>
                 )}
             </View>
         </ScrollView>
